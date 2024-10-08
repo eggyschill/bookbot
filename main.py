@@ -16,7 +16,6 @@ def main():
     # Begin printing formatting
     print("--- Begin report of books/frankenstein.txt ---")
     print(f"{num_words} words found in the document")
-    print(f"List of dicts : {list_of_dicts}")
     # For each item in the list (which has the letter : letter and count : count pairs)
     for item in list_of_dicts:
         print(f"The '{item['letter']}' character was found {item['count']} times")
