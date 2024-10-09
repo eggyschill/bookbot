@@ -1,6 +1,12 @@
 import string
+import nltk
+from nltk.corpus import stopwords
+
 
 def main():
+    nltk.download('stopwords')  # Only needed once
+    stop_words = set(stopwords.words('english'))
+
     book_path = "books/frankenstein.txt" # Path of book
 
     text = get_book_text(book_path) # The actual book text itself
@@ -13,6 +19,10 @@ def main():
 
     list_of_dicts.sort(reverse=True, key=sort_on) #sort by count, reversed.
 
+    word_frequency = get_word_frequency(text)
+    list_of_words_frequencies = [{"word": word, "count":count} for word, count in word_frequency.items()] # creating a list of dictionaries with their word:count attributes
+    list_of_words_frequencies.sort(reverse=True, key=sort_on)
+
     # Begin printing formatting
     print("--- Begin report of books/frankenstein.txt ---")
     print(f"{num_words} words found in the document")
@@ -20,6 +30,13 @@ def main():
     for item in list_of_dicts:
         print(f"The '{item['letter']}' character was found {item['count']} times")
     
+    print("--- Begin section on word frequencies ---")
+    counter = 0
+    for item in list_of_words_frequencies:
+        print(f"The '{item['word']}' word was found {item['count']}' times")
+        counter += 1
+        if (counter == 20):
+            break
     print("--- End report ---")
     
 
@@ -47,5 +64,18 @@ def get_book_text(path):
 # function that sorts the dictionary by the 'count's 
 def sort_on(dict):
     return dict['count']
+
+def get_word_frequency(text):
+    stop_words = set(stopwords.words('english'))
+    word_dict = {}
+    for word in text.split():
+        word = word.lower()
+        if (word.isalpha() and word in word_dict):
+            word_dict[word] += 1
+        elif (word not in stop_words and word.isalpha()):
+            word_dict[word] = 1
+    return word_dict
+
+
 
 main()
